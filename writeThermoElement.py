@@ -49,16 +49,16 @@ def writeFIN2(dataDir, session = None, postProcessed = False):
                 fin2writer.writerow(header)
                 fin2writer.writerows(ts)
                 startTime[d] = min(startTime[d], s.fileTimes["DAT"])
-        writeFIN(dataDir[d], startTime[d])
+        writeFIN(dataDir[d], fileList, startTime[d])
 
-def writeFIN(seqFiles, startTime):
+def writeFIN(seqFiles, fileList, startTime):
     """
-    A single FIN file is generated for each "sequence" (directory).
-    :param seqFiles: Object contain data from all files in an import directory
-    :param startTime: datetime for the begnning of the session.
+    Thermo Element ICP-MSs generate
+    :param seqFiles:
+    :param fileList:
+    :param startTime:
     :return:
     """
-    fileList = list(seqFiles.keys())
     s = seqFiles[fileList[0]]['data']
     with open(s.filePaths["FIN"], 'w', newline='') as fin:
         finwriter = csv.writer(fin, delimiter=',')
@@ -78,8 +78,8 @@ def writeFIN(seqFiles, startTime):
             dwell = int(1000*massData.totaldwell)
             dwells = np.append(dwells, f'{dwell:d}')
         finwriter.writerow(dwells)
-        for file in seqFiles.values():
-            finwriter.writerow([f'{file["data"].name}.FIN2'])
+        for file in fileList:
+            finwriter.writerow([f'{seqFiles[file]["data"].name}.FIN2'])
 
 
 
