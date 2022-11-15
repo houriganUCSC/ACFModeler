@@ -51,7 +51,7 @@ class regressed():
             self.f[isotope].inlier = np.abs(self.f[isotope].acf-med)/iqr <= tukey
 
     def regress(self, drift = True, reject = True):
-        session = pickle.load(open( "save.p", "rb" ))
+        session = pickle.load(open("../test/save.p", "rb"))
         self.r = session.record
         self.isotopes = self.r.keys()
         self.filterRange()

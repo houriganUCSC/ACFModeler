@@ -2,7 +2,7 @@ import struct
 import time
 import re
 import numpy as np
-import massRecord
+from src import massRecord
 import os
 
 

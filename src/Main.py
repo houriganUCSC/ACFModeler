@@ -3,7 +3,6 @@ import readThermoElement
 import sessionRecord
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from PyQt5.QtWidgets import QApplication, QWidget
 import numpy as np
 import os
 import pickle
@@ -30,7 +29,7 @@ for i,f in enumerate(file_names):
         s.masses[isotope].filterRaw(5E+6,1000,absT)
         session.appendToRecord(isotope, s.masses[isotope].filtered)
 
-pickle.dump(session, open( "save.p", "wb" ))
+pickle.dump(session, open("../test/save.p", "wb"))
 
 """fig, axs = plt.subplots(len(s.isotopes),1)
 ax = plt.gca()

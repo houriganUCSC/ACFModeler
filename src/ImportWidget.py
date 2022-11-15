@@ -12,19 +12,15 @@ import time
 import matplotlib.pyplot as plt
 import pickle
 
-import pyqtgraph
-from PyQt5.QtCore import QFile,QSettings, QSize, QMetaObject, QCoreApplication
-from PyQt5.QtGui import *
 from PyQt5.Qt import *
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QComboBox, QPushButton, \
-    QSizePolicy, QSpacerItem, QTreeWidget, QFileDialog, QTreeWidgetItem, QDialog
+    QSizePolicy, QSpacerItem, QTreeWidget, QFileDialog, QTreeWidgetItem
 import readThermoElement
 from datetime import datetime
 from writeThermoElement import writeFIN2
 
-from matplotlib.backends.qt_compat import QtWidgets
 from matplotlib.backends.backend_qtagg import (
-    FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
+    FigureCanvas)
 from matplotlib.figure import Figure
 
 class Ui_Form(object):
