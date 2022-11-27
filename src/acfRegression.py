@@ -62,7 +62,8 @@ class IsotopeFit():
 
     def qualify(self, Pmax, Pmin = 1, Amin = 1):
         """
-        qualify creates a 1D logical array where True satisfies logical
+        qualify creates a 1D logical array where True satisfies logical test
+        if a datum "qualifies" the  Pmax > Pi > Pmin AND Ai > Amin
         :param Pmax: integer of minimum pulse counts
         :param Pmin: integer of maximum pulse counts
         :param Amin: integer of minimum bit value
@@ -74,7 +75,8 @@ class IsotopeFit():
         """
         Filters outliers based on the median & interquartile range (iqr).
         This non-parametric filter performs better on spikes than mean / SD filters
-
+        Spikes - short period high amplitude transients are unlikely to "qualify"
+        With a gross outlier of 3xiqr ~1% of the data are rejected.
         :param tukey: float that is a multiplier
         :return: inliers: 1D logical array of not gross outliers
         """
@@ -202,10 +204,10 @@ class IsotopeFit():
             p = p/(1-p*tau)
 
         # ACF and Drift Correct
-        if self.fitParams["ACF_Type"]== "Internal":
+        if self.fitParams["ACF_Type"] == "Internal":
             a1 = self.fitParams["a1"]
             a2 = self.fitParams["a2"]
-        elif self.fitParams["ACF_Type"]== "Model":
+        elif self.fitParams["ACF_Type"] == "Model":
             a1 = self.fitParams["ea1"]
             a2 = self.fitParams["ea2"]
 
@@ -256,7 +258,7 @@ class SessionFits():
                 abs_t = dataDir[dir][file].scans["scanTime"]
                 mass_del_t = 0
                 for i, isotope in enumerate(s.isotopes):
-                    self.sessionFits[isotope] = IsotopeFit()
+                    self.sessionFits[isotope] = IsotopeFit()  #New instance of IsotopeFit class
                     dwell = s.masses[isotope].dwell
                     p2d = s.masses[isotope].raw["pulse"]
                     rows, cols = p2d.shape
@@ -378,8 +380,8 @@ class SessionFits():
                 mask = "tauInternal"
             else: mask = "acfInternal"
             x = PolynomialFeatures(self.fitOrder[param]).fit_transform(mass)
-            #Replace data not used for Cross-Cal v. Mass Fit with NaN.
-            #NaNs are 'missing' data for the regression.
+            # Replace data not used for Cross-Cal v. Mass Fit with NaN.
+            # NaNs are 'missing' data for the regression.
             y = np.where(massFits[mask], massFits[param], np.nan)
             if self.weight[param]:
                 w = 1/mass[param+"err"]**2
