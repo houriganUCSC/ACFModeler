@@ -1,13 +1,11 @@
 import csv
-import pathlib
-from datetime import datetime
-from PyQt6.QtCore import QMutex
-
 import struct
 import time
 import re
 import numpy as np
 import os
+from datetime import datetime
+#Project imports
 from src.records.Session import Session, Mass, Sample
 
 
@@ -497,91 +495,3 @@ class ThermoFIN2:
             for fileName in fNames:
                 finwriter.writerow([fileName])  # Header 12:  FIN2 names
             fin.close()
-
-
-
-# def writeFIN2(dataDir, session: Session = None, postProcessed = False):
-#     """
-#     Write chromatogram text file formatted as a ThermoFinnigan (*.FIN2) file
-#
-#     :param dataDir: Import data directory object
-#     :param session: SessionFits object
-#     :param postProcessed: Boolean   True = use post-processed data in Session,
-#                                     False = use row count equivalents from import
-#     :return:
-#     """
-#     startTime = {}
-#
-#     for d, files in dataDir.items():
-#         startTime[d] = time.localtime(datetime.now().timestamp())
-#         fileList =list(files.keys())
-#         s = dataDir[d][fileList[0]]['data']
-#         line6 = []
-#         header = ["Time"]
-#
-#         # create empty time-series data array
-#         ts = np.zeros((len(s.scans["scanTime"]),s.metaData["masses"]+1))
-#         # add relative times column
-#         ts[:,0] = s.scans["scanTime"]
-#         for i, isotope in enumerate(s.isotopes):
-#             if postProcessed and session is not None:
-#                 intensity = session.sessionFits[isotope].massTimeSeries
-#             else:
-#                 intensity = s.masses[isotope].massTimeSeries
-#             # single digit of precision
-#             fixedPrecision = 10 * intensity
-#             fixedPrecision = fixedPrecision.astype(int)
-#             fixedPrecision = fixedPrecision/10
-#             ts[:,i+1] = fixedPrecision
-#             header.append(f'{isotope}')
-#             line6.append("16")
-#         for file in files.keys():
-#             s = dataDir[d][file]["data"]
-#             with open(s.filePaths["FIN2"], 'w', newline='') as fin2:
-#                 fin2writer = csv.writer(fin2, delimiter=',')
-#                 fin2writer.writerow(["Finnigan MAT ELEMENT Raw Data"])              # Header 1:  File type description
-#                 timestamp = time.strftime('%A, %B %d, %Y, %H:%M:%S', s.fileTimes["DAT"])
-#                 fin2.write(timestamp+'\r\n')                                        # Header 2:  timestamp
-#                 fin2writer.writerow([s.FIN])                                        # Header 3:  FIN file name
-#                 fin2writer.writerow([f'{len(s.scans["scanTime"])}'])                # Header 4:  n Scans
-#                 fin2writer.writerow([0])                                            # Header 5:  unknown
-#                 fin2writer.writerow(line6)                                          # Header 6:  unknown
-#                 fin2writer.writerow(["CPS"])                                        # Header 7:  units
-#                 fin2writer.writerow(header)                                         # Header 8:  column names
-#                 fin2writer.writerows(ts)                                            # Data    :  2D data array
-#                 startTime[d] = min(startTime[d], s.fileTimes["DAT"])
-#         writeFIN(dataDir[d], fileList, startTime[d])
-#
-# def writeFIN(seqFiles, fileList, startTime):
-#     """
-#     Thermo Element ICP-MSs generate
-#     :param seqFiles:
-#     :param fileList:
-#     :param startTime:
-#     :return:
-#     """
-#     s = seqFiles[fileList[0]]['data']
-#     with open(s.filePaths["FIN"], 'w', newline='') as fin:
-#         finwriter = csv.writer(fin, delimiter=',')
-#         finwriter.writerow(["Finnigan MAT ELEMENT"])                                # Header 1:  File type description
-#         timestamp = time.strftime('%A, %B %d, %Y, %H:%M:%S', startTime)
-#         fin.write(timestamp+'\r\n')                                                 # Header 2:  timestamp
-#         finwriter.writerow([s.filePaths["SEQ"]])                                    # Header 3:  SEQ Path
-#         finwriter.writerow([s.filePaths["MET"]])                                    # Header 4:  MET Path
-#         finwriter.writerow([s.filePaths["TPF"]])                                    # Header 5:  TPF Path
-#         finwriter.writerow([s.filePaths["DAT"]])                                    # Header 6:  DAT Path
-#         finwriter.writerow("")                                                      # Header 7:
-#         finwriter.writerow("")                                                      # Header 8:
-#         finwriter.writerow([s.metaData["masses"]])                                  # Header 9:  n masses
-#         finwriter.writerow(s.isotopes)                                              # Header 10:  isotope names
-#         dwells = []
-#         for isotope,massData in s.masses.items():
-#             dwell = int(1000*massData.totaldwell)
-#             dwells = np.append(dwells, f'{dwell:d}')
-#         finwriter.writerow(dwells)                                                  # Header 11:  dwell times
-#         for file in fileList:
-#             finwriter.writerow([f'{seqFiles[file]["data"].name}.FIN2'])             # Header 12:  FIN2 names
-
-
-
-
