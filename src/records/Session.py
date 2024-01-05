@@ -1,10 +1,11 @@
 import numpy as np
+
 import statsmodels.api as sm
 from sklearn.preprocessing import PolynomialFeatures
+
+# Project imports
 from src.ui.spectrumModelDesignTable import ModelDesignTable
-from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib import pyplot as plt
-import pandas as pd
+
 class Session:
     def __init__(self):
         """

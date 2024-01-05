@@ -1,8 +1,11 @@
-from PyQt6.QtWidgets import (QApplication, QDialog, QTableWidget, QTableWidgetItem, QDoubleSpinBox, QWidget,
-                             QGridLayout, QComboBox, QLabel, QPushButton)
-from PyQt6.QtCore import Qt, QMutex
-from src.records.Session import Session
 import numpy as np
+
+from PyQt6.QtWidgets import (QApplication, QDialog, QTableWidget, QDoubleSpinBox, QWidget,
+                             QGridLayout, QComboBox, QLabel, QPushButton)
+from PyQt6.QtCore import Qt
+
+from src.records.Session import Session
+
 
 
 class IsotopeIDQuery(QDialog):

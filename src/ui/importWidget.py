@@ -2,25 +2,23 @@ import os
 import time
 import numpy as np
 import pathlib
-from src.records.Session import Session, Mass
-from src.fileIO.ThermoE2XR import ThermoDAT
 import pickle
-
+from datetime import datetime
 
 from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QComboBox, QPushButton, \
-    QSizePolicy, QTreeWidget, QFileDialog, QTreeWidgetItem, QFrame, QProgressBar, QMessageBox, \
-    QGridLayout, QInputDialog
+    QSizePolicy, QTreeWidget, QFileDialog, QTreeWidgetItem, QProgressBar, QMessageBox, \
+    QGridLayout
 from PyQt6.QtCore import QRunnable, QObject, QThreadPool, pyqtSignal as Signal, pyqtSlot as Slot, QMutex, \
     QRect,  QCoreApplication, QMetaObject, Qt
 
-import matplotlib
-
-from datetime import datetime
-# from src.fileIO.ThermoElement import *
-
 # Matplotlib imports
+import matplotlib
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+
+# Project imports
+from src.records.Session import Session
+from src.fileIO.ThermoE2XR import ThermoDAT
 
 matplotlib.use("QTAgg")
 

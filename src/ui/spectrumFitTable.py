@@ -1,22 +1,18 @@
 import sys
+import numpy as np
 
 import PyQt6.QtCore
-import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
-from matplotlib import ticker
-import numpy as np
-import re
 from PyQt6.QtWidgets import QApplication, QWidget, QTableWidget, QComboBox, QTabWidget, \
     QCheckBox, QVBoxLayout, QTableWidgetItem, QSizePolicy, QHBoxLayout
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QFont
-from sklearn.preprocessing import PolynomialFeatures
-import statsmodels.api as sm
-# from src.acfRegression import SessionFits
-from src.records import Session as Session
+
+from matplotlib import ticker
+
+# Project Imports
 from src.records.Session import SpectrumFits
 from src.ui.headerCodes import CrossCalHeaderCodes
-from src.ui.spectrumModelDesignTable import ModelDesignTable
+
 
 plusminus = u"\u00B1"
 class CrossCalFitType(QComboBox):

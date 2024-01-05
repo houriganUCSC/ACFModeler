@@ -1,13 +1,12 @@
 import sys
-import matplotlib.pyplot as plt
 import numpy as np
-import re
+
 from PyQt6.QtWidgets import QApplication, QWidget, QTableWidget,\
     QVBoxLayout, QTableWidgetItem, QSizePolicy
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
-from sklearn.preprocessing import PolynomialFeatures
-import statsmodels.api as sm
+
+# Project imports
 from src.records.Session import Session
 
 

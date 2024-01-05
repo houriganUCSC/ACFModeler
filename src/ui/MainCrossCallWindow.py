@@ -1,17 +1,14 @@
 import sys
-import numpy
-from PyQt6.QtWidgets import QApplication, QMainWindow, QTabWidget, QGridLayout, QComboBox,\
-    QPushButton, QLabel, QSizePolicy, QTableWidget, QWidget
 
+from PyQt6.QtWidgets import QApplication, QMainWindow, QTabWidget, QWidget
 from PyQt6.QtCore import pyqtSlot
 
+# Project imports
 import src.ui.importWidget as importer
 import src.ui.isotopeFitWidget as fitter
 import src.ui.spectrumFitWidget as spectrum
 import src.records.Session as session
 
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 
 
 class ACFModelMain(QMainWindow):

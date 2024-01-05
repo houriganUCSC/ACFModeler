@@ -9,25 +9,20 @@ import collections
 
 import sys
 import os
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 from matplotlib.patches import Rectangle
-from matplotlib import ticker as ticker
 import matplotlib
 import re
-import matplotlib.cm as cm
-from mpl_toolkits.mplot3d import axes3d
-import numpy
-import numpy as np
+import pickle
 from PyQt6.QtWidgets import (QGridLayout, QLabel, QSpinBox, QDoubleSpinBox, QWidget, QComboBox, QPushButton, QSizePolicy,
                              QApplication, QMainWindow, QHBoxLayout, QFileDialog, QCheckBox)
 
 from PyQt6.QtCore import QRect, Qt, QCoreApplication, pyqtSignal
-from PyQt6.QtGui import *
+
+# Project imports
 from src.ui import isotopeFitTable
 from src.records.Session import *
-import pickle
+
 
 class FilterFitWidget(QWidget):
     regressionComplete = pyqtSignal()

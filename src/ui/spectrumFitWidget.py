@@ -2,19 +2,18 @@ import sys
 import pickle
 import os
 
-import PyQt6.QtCore
 from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QComboBox, QPushButton,\
     QFileDialog, QLabel, QDoubleSpinBox, QCheckBox, QHBoxLayout
 from PyQt6.QtCore import QRect, Qt, pyqtSlot
 from PyQt6.QtCore import pyqtSlot, pyqtSignal
 
-import src.ui.spectrumFitTable as acfTable
-import src.ui.spectrumModelDesignTable as modelDesign
-import src.records.Session as Session
-
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 
+# Project imports
+import src.ui.spectrumFitTable as acfTable
+import src.ui.spectrumModelDesignTable as modelDesign
+import src.records.Session as Session
 from src.fileIO.ThermoE2XR import ThermoFIN2
 
 

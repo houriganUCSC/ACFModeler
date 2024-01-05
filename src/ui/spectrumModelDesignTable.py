@@ -1,8 +1,7 @@
-import numpy as np
 from PyQt6.QtWidgets import QApplication, QWidget, QTableWidget, QCheckBox, QComboBox, \
-    QVBoxLayout, QSizePolicy, QMainWindow, QHBoxLayout
+    QVBoxLayout, QSizePolicy, QHBoxLayout
 from PyQt6.QtGui import QFont
-from PyQt6.QtCore import Qt, pyqtSignal, pyqtSlot
+from PyQt6.QtCore import Qt, pyqtSignal
 
 class FitTypes(QComboBox):
     """
