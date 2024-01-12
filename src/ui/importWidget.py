@@ -189,7 +189,6 @@ class ExportWorker(QRunnable):
                         self.treeData['takeParent'] = m
                         self.treeData['takeChild'] = k
                         self.treeData['mutex'] = self.mutex
-                        print(self.treeData)
                         self.signals.addToImport.emit(self.treeData)
                         self.signals.progressInc.emit()
                         while not self.mutex.tryLock(10):
@@ -219,7 +218,6 @@ class Ui_ImportWidget(QWidget):
     def __init__(self, sessionData: Session):
         super().__init__()
         self.session = sessionData
-        print("import init", self.session)
         self.queueDict = {}
         self.startTime = {}
         self.startDir = r'G:\My Drive\LA-ICP-MS\External_User_Data\PennState'
@@ -476,6 +474,7 @@ class Ui_ImportWidget(QWidget):
         if new:
             self.tree_from_dict(self.queueDict, self.queueTreeWidget)
 
+        self.getCommonPath()
         self.queueStatus.setText(f'In Queue: {self.getQueueCount(self.queueTreeWidget)} files')
         self.importQueuedBtn.setEnabled(self.getQueueCount(self.queueTreeWidget))
         self.queueRemove.setEnabled(self.getQueueCount(self.queueTreeWidget))
@@ -509,10 +508,7 @@ class Ui_ImportWidget(QWidget):
         for dirName, dirEntries in self.queueDict.items():
             firstFile = list(dirEntries.keys())[0]
             paths.append(dirEntries[firstFile]['path'])
-        if len(paths) == 1:
-            self.commonPath = pathlib.Path(paths[0]).parent
-        else:
-            self.commonPath = pathlib.Path(os.path.commonpath(paths))
+        self.getCommonPath()
         self.queueStatus.setText(f'In Queue: {self.getQueueCount(self.queueTreeWidget)} files')
         self.importQueuedBtn.setEnabled(self.getQueueCount(self.queueTreeWidget))
         self.queueRemove.setEnabled(self.getQueueCount(self.queueTreeWidget))
@@ -522,6 +518,16 @@ class Ui_ImportWidget(QWidget):
         for i in range(tree.invisibleRootItem().childCount()):
             inTree += tree.invisibleRootItem().child(i).childCount()
         return inTree
+
+    def getCommonPath(self):
+        paths = []
+        for dirDict in self.queueDict.values():
+            for fileData in dirDict.values():
+                paths.append(fileData['path'])
+        if len(paths) == 1:
+            self.commonPath = pathlib.Path(paths[0]).parent
+        else:
+            self.commonPath = pathlib.Path(os.path.commonpath(paths))
 
     """ PROGRESS UPDATE FUNCTIONS"""
 
@@ -624,9 +630,9 @@ class Ui_ImportWidget(QWidget):
     def plotSelectedTimeSeries(self, selected, deselected):
         item = self.importedTreeWidget.selectedItems()[0]
         file = item.text(2)
-        print(file)
         self.session.plotTimeSeries(file, self.dynamic_ax)
 
+    """ FILE IO FUNCTIONS """
     def pickleImported(self):
         self.session.commonPath = self.commonPath
         startingName = os.path.basename(self.commonPath)
@@ -634,7 +640,6 @@ class Ui_ImportWidget(QWidget):
         self.session.startDir.mkdir(exist_ok=True)
         startingPath = self.session.startDir
         startingPath = startingPath.joinpath(startingName).with_suffix('.p')
-        print(startingPath)
         dlg = QFileDialog()
         dlg.setFileMode(QFileDialog.FileMode.AnyFile)
         dlg.setDirectory(str(self.session.startDir))
@@ -652,7 +657,6 @@ class Ui_ImportWidget(QWidget):
             self.dataPickled.emit(pickleFile)
 
     def unpickleImported(self):
-        print(f'{__name__}: unpickle {self.session}')
         dlg = QFileDialog()
         dlg.setFileMode(QFileDialog.FileMode.AnyFile)
         pickleFile, filter = dlg.getOpenFileName(
@@ -666,7 +670,6 @@ class Ui_ImportWidget(QWidget):
             fid.close()
             binGroups = {}
             self.importedTreeWidget.clear()
-            print("binary read", self.session, self.session.isotopes)
             for smpName, smpRecord in self.session.samples.items():
                 group = smpRecord.group
                 name = smpRecord.name
@@ -710,6 +713,7 @@ class Ui_ImportWidget(QWidget):
         else:
             self.fileFilter = "Any File (*.*)"
             self.extension = '.txt'
+
 
 
 if __name__ == "__main__":
