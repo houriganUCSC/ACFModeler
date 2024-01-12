@@ -301,13 +301,10 @@ class SpectrumWidget(QWidget):
         if not sendyID == "plotSelector":
             if self.plotSelectorCombo.currentIndex() > 0:
                 kwargs['ylim'] = (self.yLimMin.value(), self.yLimMax.value())
-        print(kwargs)
         self.spectrumTable.createPlots(**kwargs)
 
     def pickleData(self):
         self.spectrumTable.commitFits()
-        # for massrecord in self.session.masses.values():
-        #     print(massrecord.postProcessPars)
         self.startDir = None
         dlg = QFileDialog()
         dlg.setFileMode(QFileDialog.FileMode.AnyFile)

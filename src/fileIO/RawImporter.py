@@ -1,16 +1,21 @@
+from src.records import Session
+from src.fileIO.ThermoE2XR import ThermoDAT
+
 class RawDataImporter:
-    def __init__(self):
+    def __init__(self, fPath, session: Session):
         self.type = None
+        self.filePath = fPath
+        self.session = session
 
     def import(self, paths):
         pass
 
 
-class ElementImporter(RawImporter):
+class ElementImporter(RawDataImporter):
     from src.fileIO.ThermoElement import SampleData
-    def __init__(self):
-        self.type = 'Element'
-        super.__init__()
+    def __init__(self, fPath, session: Session):
+        self.type = 'Element DAT'
+        super().__init__(fPath, session)
         self.smpData = SampleData()
 
 

@@ -82,7 +82,6 @@ class Session:
         if self.status["imported"] == True:
             for massName, massRecord in self.masses.items():
                 massRecord.filter()
-            print(massName, len(massRecord.timeSeries))
             relTime = self.scanTime - self.startTime
             acfKey = list(self.masses.keys())[0]
             acf = self.masses[acfKey].ACF
@@ -277,17 +276,15 @@ class Mass:
         offsets = offsets + self.timeOffset
         time2d = time2d + offsets
         t = time2d.flatten()
-        print(self.aveMass, t)
         p = self.pulse.flatten()
         a = self.analog.flatten()
-        print(self.aveMass, len(a), p/a)
+
         anOnlyMask = np.logical_and(np.isnan(p), np.isreal(a))
         self.anOnlyTime = t[anOnlyMask]
         self.anOnly = np.sum(anOnlyMask)
         mask = np.where(np.logical_and(pMax > p, p > pMin, a > aMin))
         self.filteredTime = t[mask]
         self.filteredPulse = p[mask]
-        print(self.aveMass, len(a), len(self.filteredPulse), self.filteredPulse)
         self.filteredAnalog = a[mask]
         self.nQual = len(self.filteredTime)     # Measurements in fitting range
         self.filteredAnalog[self.filteredAnalog == 0] = np.nan
@@ -444,7 +441,10 @@ class Mass:
         reported = np.where(pCross>self.pulse, self.pulse, analogCounts)
         if not self.session.ignoreFaraday:
             reported = np.where(np.isnan(self.reported), (self.faraday.T * self.FCF).T, self.reported)
-        self.timeSeries = np.nanmean(reported, axis=1)
+        try:
+            self.timeSeries = np.nanmean(reported, axis=1)
+        except:
+            self.timeSeries = np.nan
 
     def postProcessTimeSeries(self):
         pCross = self.session.pCross

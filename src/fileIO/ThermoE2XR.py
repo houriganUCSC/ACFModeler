@@ -331,18 +331,6 @@ class ThermoDAT(Sample):
                     # IoLog.debug(f"{name} DAT file read complete")
         dat.close()
 
-    # def calculateMassIntensities(self):
-    #     """
-    #     For each isotope in the data file averages (nanmean) channels at each cycle to produce a single intensity
-    #     for each cycle to report as chromatogram text.
-    #     :return:
-    #     """
-    #
-    #     FCF = self.session.FCF
-    #     pMax = self.session.pCross
-    #     ignoreFaraday = IGNORE_FARADAY
-    #     for massRecord in self.session.masses.values():
-    #         massRecord.processTimeSeries(pMax, FCF, ignoreFaraday)
 
 
 class ThermoINF:
@@ -444,7 +432,6 @@ class ThermoFIN2:
             cycleTime = cycleTime*10000
             cycleTime = cycleTime.astype(int)/10000
             chromData = np.expand_dims(cycleTime, axis=1)
-            print(chromData.shape)
             chromHdr = ['Time']
             line6 = []
             for massName, massObj in self.session.masses.items():
@@ -455,7 +442,6 @@ class ThermoFIN2:
                 fixedPrecision = fixedPrecision.astype(int)
                 fixedPrecision = fixedPrecision / 100
                 fixedPrecision = np.expand_dims(fixedPrecision,axis=1)
-                print(chromData.shape, fixedPrecision.shape)
                 chromData = np.append(chromData, fixedPrecision, axis=1)
                 chromHdr.append(massName)
                 line6.append("16")
@@ -473,7 +459,6 @@ class ThermoFIN2:
                     fin2writer.writerows(chromData)  # Data    :  2D data array
                     fin2.close()
         # Write FIN File
-        print(os.path.basename(smpRecord.filePaths["DAT0"]))
         with open(finPath, 'w', newline='') as fin:
             finwriter = csv.writer(fin, delimiter=',')
             finwriter.writerow(["Finnigan MAT ELEMENT"])  # Header 1:  File type description

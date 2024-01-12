@@ -19,9 +19,16 @@ from PyQt6.QtWidgets import (QGridLayout, QLabel, QSpinBox, QDoubleSpinBox, QWid
 
 from PyQt6.QtCore import QRect, Qt, QCoreApplication, pyqtSignal
 
+
+# Matplotlib imports
+import matplotlib
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+
 # Project imports
 from src.ui import isotopeFitTable
 from src.records.Session import *
+from src.fileIO.ThermoE2XR import ThermoDAT
 
 
 class FilterFitWidget(QWidget):
@@ -30,7 +37,6 @@ class FilterFitWidget(QWidget):
     def __init__(self, session: Session):
         super().__init__()
         self.session = session
-        print("filter init", self.session, self.session.isotopes)
         self.uiState = 'initial'
 
     def setupUi(self):
@@ -1278,9 +1284,11 @@ class AppDemo(QMainWindow):
     def __init__(self):
         super().__init__()
         session = Session()
+        pPath = '/Users/jeremyhourigan/My Drive/LA-ICP-MS/External_User_Data/Ingersoll/RVI22-01/Data/RVI_22_01_SEQ1/ACF_Model/RVI_22_01_SEQ1.p'
+
         # pPath ="/Users/jeremyhourigan/PycharmProjects/ACFModeler/test/SESSION.p"
         # pPath = "/Users/jeremyhourigan/PycharmProjects/ACFModeler/test/SESSION_SEQ1.p"
-        pPath = "/Users/jeremyhourigan/My Drive/LA-ICP-MS/External_User_Data/PennState/pennState30um40pct.p"
+        # pPath = "/Users/jeremyhourigan/My Drive/LA-ICP-MS/External_User_Data/PennState/pennState30um40pct.p"
         with open(pPath, 'rb') as fid:
             session = pickle.load(fid)
         fid.close()

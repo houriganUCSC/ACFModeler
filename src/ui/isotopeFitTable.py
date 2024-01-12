@@ -141,10 +141,8 @@ class IsotopeFitTableWidget(QTableWidget):
         self.setCurrentCell(row, col)
 
     def populateFilterTable(self, session: Session):
-        print(__name__, session.isotopes)
         self.setVerticalHeaderLabels(session.isotopes)
         for massName, massRecord in session.masses.items():
-            print(__name__, massName, )
             row = np.where(session.isotopes == massName)[0][0]
             for col, colName in enumerate(self.colHeaders):
                 if colName == 'Mass':

@@ -42,7 +42,6 @@ class ACFModelMain(QMainWindow):
         self.tabs.currentChanged.connect(self.tabChanged)
 
     def tabChanged(self, current: int):
-        print(f'{__name__} tab changed: {self.session}')
         if current == 1 and self.session.status['new']:
             self.rawFitWidget.dataImported()
             self.session.status['new'] = False
@@ -50,7 +49,6 @@ class ACFModelMain(QMainWindow):
 
     @pyqtSlot(str)
     def dataImported(self, pickleFilePath: str):
-        print(__name__, "Data Imported")
         self.session = self.importer.session
         self.tabs.removeTab(1)
         self.rawFitWidget = fitter.FilterFitWidget(self.session)
@@ -58,7 +56,6 @@ class ACFModelMain(QMainWindow):
         self.rawFitWidget.regressionPickled.connect(self.dataFit)
         self.tabs.insertTab(1, self.rawFitWidget,"Filter & Fit Raw Data")
         self.session.pickleFile = pickleFilePath
-        print("Data Imported", pickleFilePath)
 
     @pyqtSlot(str)
     def dataFit(self, pickleFilePath:str):
@@ -67,7 +64,6 @@ class ACFModelMain(QMainWindow):
         self.tabs.insertTab(2, self.massSpectrumWidget, "Model Mass Spectrum")
         self.session.pickleFile = pickleFilePath
         self.massSpectrumWidget.spectrumFitSaved.connect(self.spectrumFitPickled)
-        print("Data Regressed", pickleFilePath)
 
 
     @pyqtSlot(str)
